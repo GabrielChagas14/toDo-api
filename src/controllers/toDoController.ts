@@ -19,18 +19,40 @@ const index = async (req: any, res: any) => {
     res.status(200).send();
 };
 const create = async (req: any, res: any) => {
-    const { title, done } = req.body
-    const toDo = await prisma.toDo.create({
+    const { title } = req.body
+    const toDoCreated = await prisma.toDo.create({
         data: {
-            title,
-            done
+            title
         }
     })
-    res.json(toDo).status(200).send();
+    res.json(toDoCreated).status(200).send();
 };
-
+const update = async (req: any, res: any) => {
+    const {id, title, done} = req.body
+    const toDoUpdated = await prisma.toDo.update({
+        where: {
+            id: id
+        },
+        data: {
+            title: title,
+            done: done
+        }
+    })
+    res.json(toDoUpdated).status(200).send()
+}
+const destroy = async (req:any, res:any) => {
+    const {id} = req.body
+    const toDoDeleted = await prisma.toDo.delete({
+        where: {
+            id: id
+        }
+    })
+    res.json(toDoDeleted).status(200).send()
+}
 module.exports = {
     show,
     index,
-    create
+    create,
+    update,
+    destroy
 }
